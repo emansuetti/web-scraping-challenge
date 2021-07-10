@@ -75,3 +75,39 @@ def featured_image(browser):
 
     return img_url
 
+def mars_facts():
+    # Add try/except for error handling
+    try:
+        # use 'read_html' to scrape the facts table into a dataframe
+        df = pd.read_html('https://galaxyfacts-mars.com')[0]
+
+    except BaseException:
+        return None
+
+    # assign columns and set index of dataframe
+    df.columns = ['Description', 'Mars', 'Earth']
+    df.set_index('Description', inplace=True)
+
+    # Convert dataframe into HTML format, add bootstrap
+    return df.to_html(classes="table table-striped")
+
+def hemispheres(browser):
+    url = 'https://marshemispheres.com/'
+
+    browser.visit(url + 'index.html')
+
+    # Click the link, find the sample anchor, return the href
+    hemisphere_image_urls = []
+    for i in range(4):
+        # Find the elements on each loop to avoid a stale element exception
+        browser.find_by_css("a.product-item img")[i].click()
+        hemi_data = scrape_hemisphere(browser.html)
+        hemi_data['img_url'] = url + hemi_data['img_url']
+        # Append hemisphere object to list
+        hemisphere_image_urls.append(hemi_data)
+        # Finally, we navigate backwards
+        browser.back()
+
+    return hemisphere_image_urls
+
+
