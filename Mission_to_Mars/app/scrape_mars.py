@@ -5,6 +5,7 @@ import datetime as dt
 from webdriver_manager.chrome import ChromeDriverManager
 
 def scrape_all():
+
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=True)
 
@@ -24,7 +25,7 @@ def scrape_all():
 def mars_news(browser):
 
 
-    url = 'https://redplanetscience.com/'
+    url = 'https://redplanetscience.com'
     browser.visit(url)
 
     browser.is_element_present_by_css('div.list_text', wait_time=1)
